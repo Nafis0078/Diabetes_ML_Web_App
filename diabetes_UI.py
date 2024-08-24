@@ -12,13 +12,15 @@ st.set_page_config(page_title="Health Assistant",
 # loading the saved models
 
 diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
+iris_model = pickle.load(open('iris_model.sav', 'rb'))
+
 
 # sidebar for navigation
 with st.sidebar:
     selected = option_menu('Multiple Disease Prediction System',
 
                            ['Diabetes Prediction',
-                            'Heart Disease Prediction',
+                            'Iris - Flower Prediction',
                             'Parkinsons Prediction'],
                            menu_icon='hospital-fill',
                            icons=['activity', 'heart', 'person'],
@@ -72,17 +74,62 @@ if selected == 'Diabetes Prediction':
         diab_prediction = diabetes_model.predict([user_input])
 
         if (diab_prediction[0] == 1):
-            diab_diagnosis = 'The person is  Diabetic'
+            diab_diagnosis = 'The person is diabetic'
         else:
-            diab_diagnosis = 'The person is  Diabetic'
+            diab_diagnosis = 'The person is not diabetic'
 
     st.success(diab_diagnosis)
 
-# Heart Disease Prediction Page
-if selected == 'Heart Disease Prediction':
+
+
+
+
+
+
+
+
+# Iris
+if selected == 'Iris - Flower Prediction':
 
     # page title
-    st.title('Coming Soon...')
+    st.title('Flower Prediction')
+
+    # getting the input data from the user
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        sepalLength = st.text_input('Sepal Length')
+
+    with col2:
+        sepalWidth = st.text_input('Sepal Width')
+
+    with col3:
+        petalLength = st.text_input('Petal Length')
+
+    with col1:
+        petalWidth = st.text_input('Petal Width')
+
+    # code for Prediction
+    iris_diag = ''
+
+    # creating a button for Prediction
+
+    if st.button(' Result'):
+
+        user_input = [sepalLength, sepalWidth, petalLength, petalWidth]
+
+        user_input = [float(x) for x in user_input]
+
+        iris_prediction = iris_model.predict([user_input])
+
+        if iris_prediction[0] == 0:
+            iris_diag = 'Setosa'
+        elif iris_prediction[0] == 1:
+            iris_diag = 'Versicolor'
+        else:
+            iris_diag = 'Virginica'
+
+    st.success(iris_diag)
 
 
 
